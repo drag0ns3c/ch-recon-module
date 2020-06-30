@@ -1,5 +1,7 @@
 import os
+import requests
 
+from requests.auth import HTTPBasicAuth
 from recon.core.module import BaseModule
 from recon.mixins.resolver import ResolverMixin
 from recon.mixins.threads import ThreadingMixin
@@ -30,6 +32,12 @@ class Module(BaseModule, ResolverMixin, ThreadingMixin):
     # the second parameter is required to capture the result of the "SOURCE" option, which means that it is only required if "query" is defined within "meta"
     # the third parameter is required if a value is returned from the "module_pre" method
     def module_run(self, hosts):
-        self.output(self.options)
+        api_key = self.keys.get('ch_api')
+        company_number = self.options.get('COMPANY_NUMBER')
+        self.output(company_number)
+        auth = HTTPBasicAuth(api_key, '')
+        url = f'https://api.companieshouse.gov.uk/company/{company_number:08d}'
+        r = requests.get(url, auth=auth)
+        self.output(r.json())
         self.output('Companies House search...')
         # self.thread(hosts, url, headers)
