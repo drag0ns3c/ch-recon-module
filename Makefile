@@ -1,3 +1,3 @@
 .PHONY: dev-setup
 dev-setup:
-	ln -s ${PWD} ${HOME}/.recon-ng/modules/recon/companieshouse
+	ln -s ${PWD}/uk_company.py ${HOME}/.recon-ng/modules/recon/companies-multi/
